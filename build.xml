@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<project name="IPAGameOfLife" default="jar" basedir=".">
+  <property name="build" value="bin" />
+  <property name="src" value="src/game_of_life" />
+  <property name="dist" value="." />
+  <property name="jarfile" value="GameOfLife.jar" />
+  <property name="debug" value="true" />
+  <property name="optimize" value="false" />
+  <property name="mainclass" value="game_of_life.GameOfLife" />
+	
+  <target name="build">
+    <javac srcdir="${src}" 
+           debug="${debug}"
+	   optimize="${optimize}"
+	   destdir="${build}"
+	   encoding="utf-8"
+    />
+  </target>
+  <target name="clean" depends="build">
+    <delete verbose="true">
+      <fileset dir="${build}">
+        <include name="*.class" />
+      </fileset>
+    </delete>
+  </target>
+
+  <target name="jar" depends="build">
+    <delete verbose="true">
+      <fileset dir="${dist}">
+        <include name="${jarfile}" />
+      </fileset>
+    </delete>
+    <jar jarfile="${dist}/${jarfile}" basedir="${build}" >
+      <manifest>
+        <attribute name="Main-Class" value="${mainclass}" />
+      </manifest>
+    </jar>
+  </target>
+
+  <target name="run" depends="jar">
+    <java jar="${dist}/${jarfile}" fork="true" spawn="true" />
+  </target>
+</project>
